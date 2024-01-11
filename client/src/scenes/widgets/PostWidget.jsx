@@ -11,6 +11,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
+import { useNavigate } from "react-router-dom";
 
 const PostWidget = ({
   postId,
@@ -32,6 +33,8 @@ const PostWidget = ({
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 
+  const navigate = useNavigate()
+
   const handleComment = async () => {
     if (comment == '') {
       return;
@@ -47,6 +50,19 @@ const PostWidget = ({
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
     setComment('')
+  }
+
+  const handleChat = async() =>{
+    // const res = await fetch(`http://localhost:3001/chat`,{
+    //   method:"POST",
+    //   headers:{
+    //     Authorization:`Bearer ${token}`,
+    //     "contect-Type": "application/json"
+    //   },
+    //   body:JSON.stringify({ senderId: loggedInUserId, receiverId: postUserId })
+    // })
+    // const resp = await res.json();
+    navigate(`/profile/${userPicturePath}/${name}/${postUserId}`)      
   }
 
   const { palette } = useTheme();
@@ -119,7 +135,7 @@ const PostWidget = ({
 
           <FlexBetween gap="0.3rem">
             <IconButton >
-              <MessageIcon />
+              <MessageIcon onClick={handleChat} />
             </IconButton>
           </FlexBetween>
 
