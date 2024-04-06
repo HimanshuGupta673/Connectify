@@ -19,6 +19,7 @@ export const getUserFriends = async (req, res) => {
     const friends = await Promise.all(
       user.friends.map((id) => User.findById(id))
     );
+    // Promise.all(): This function takes an array of promises and returns a single promise. It waits for all promises in the array to resolve, and then resolves with an array of their results.
     const formattedFriends = friends.map(
       ({ _id, firstName, lastName, occupation, location, picturePath }) => {
         return { _id, firstName, lastName, occupation, location, picturePath };
@@ -39,7 +40,7 @@ export const addRemoveFriend = async (req, res) => {
 
     if (user.friends.includes(friendId)) {
       user.friends = user.friends.filter((id) => id !== friendId);
-      friend.friends = friend.friends.filter((id) => id !== id);
+      friend.friends = friend.friends.filter((id1) => id1 !== id);
     } else {
       user.friends.push(friendId);
       friend.friends.push(id);
